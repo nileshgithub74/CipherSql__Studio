@@ -11,14 +11,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // middleware
-app.use(cors({
-  origin: [
-    "http://localhost:5173", // Local development
-    "https://your-frontend-domain.netlify.app", // Replace with your actual frontend URL
-    "https://your-frontend-domain.vercel.app"   // Or whatever platform you use
-  ],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,9 +28,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/health", (req, res) => {
-  res.json({ status: "OK", timestamp: new Date().toISOString() });
-});
+
 
 //routes
 app.use("/api/assignment", assignmentRoutes);
