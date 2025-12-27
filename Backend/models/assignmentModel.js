@@ -40,7 +40,7 @@ const assignmentSchema = new mongoose.Schema({
       }
     }],
     rows: [{
-      type: mongoose.Schema.Types.Mixed
+      type: mongoose.Schema.Types.Mixed,
     }]
   }],
   expectedOutput: {
