@@ -10,7 +10,6 @@ React-based frontend application for the SQL Editor learning platform.
 - **React Router DOM** - Client-side routing
 - **Axios** - HTTP client for API communication
 - **Vanilla CSS** - Custom styling without frameworks
-
 ## 📁 Project Structure
 
 ```
