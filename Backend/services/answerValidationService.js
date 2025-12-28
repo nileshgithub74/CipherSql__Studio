@@ -1,6 +1,5 @@
 import { executeUserQuery, pool } from '../database/postgresql.js';
 
-// Compare two result sets for equality
 const compareResults = (userResult, expectedResult) => {
 
   if (userResult.rows.length !== expectedResult.rows.length) {
@@ -64,7 +63,7 @@ const compareResults = (userResult, expectedResult) => {
   };
 };
 
-// Get expected SQL query for assignment
+
 
 const getExpectedQuery = (assignment) => {
   const expectedQueries = {
@@ -81,7 +80,6 @@ const getExpectedQuery = (assignment) => {
   return expectedQueries[assignment.title] || null;
 };
 
-// Validate user's SQL query against expected result
 export const validateAnswer = async (userQuery, assignment, schemaId) => {
   const expectedQuery = getExpectedQuery(assignment);
   

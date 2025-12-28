@@ -3,7 +3,7 @@
   background-color: #f9fafb;
 }
 
-/* Global reset and base styles */
+
 * {
   box-sizing: border-box;
 }
@@ -17,18 +17,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Remove default button styles */
+
 button {
   font-family: inherit;
 }
 
-/* Remove default link styles */
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Utility classes */
+
 .sr-only {
   position: absolute;
   width: 1px;
