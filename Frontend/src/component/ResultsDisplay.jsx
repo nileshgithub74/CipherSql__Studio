@@ -3,7 +3,7 @@ import '../styles/ResultsDisplay.css';
 const ResultsDisplay = ({ results, validation }) => {
   return (
     <div className="results-container">
-      {/* Validation Feedback */}
+      
       {validation && (
         <div className={`validation ${validation.isCorrect ? 'success' : 'error'}`}>
           <h4>{validation.isCorrect ? ' Correct!' : ' Incorrect'}</h4>
@@ -11,7 +11,7 @@ const ResultsDisplay = ({ results, validation }) => {
         </div>
       )}
 
-      {/* Query Results */}
+    
       {results && (
         <div className="results">
           <h4>Results ({results.rowCount} rows)</h4>

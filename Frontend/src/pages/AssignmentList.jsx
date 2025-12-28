@@ -7,14 +7,19 @@ import "../styles/AssignmentList.css";
 const AssignmentList = () => {
   const [assignments, setAssignments] = useState([]);
 
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
+ 
+
+
 
   const fetchAssignments = async () => {
     const response = await axios.get(`${API_CONFIG.BASE_URL}/assignment`);
     setAssignments(response.data.allAssignment || []);
   };
+
+
+   useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <div className="assignment-list">
