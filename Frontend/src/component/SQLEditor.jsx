@@ -9,7 +9,6 @@ const SQLEditor = ({ onExecute, assignment }) => {
   const [hint, setHint] = useState("");
   const [showHint, setShowHint] = useState(false);
   const [loadingHint, setLoadingHint] = useState(false);
-  const [isExecuting, setIsExecuting] = useState(false);
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
 
@@ -17,143 +16,8 @@ const SQLEditor = ({ onExecute, assignment }) => {
     // Setup autocomplete when editor is ready
     if (editorRef.current && monacoRef.current && assignment) {
       setupSQLAutocompletion();
-      setupSQLValidation();
     }
   }, [assignment]);
-
-  const setupSQLValidation = () => {
-    const monaco = monacoRef.current;
-    const editor = editorRef.current;
-
-    // Register diagnostic provider for SQL validation
-    monaco.languages.registerDocumentFormattingEditProvider('sql', {
-      provideDocumentFormattingEdits: (model) => {
-        return [];
-      }
-    });
-
-    // Add real-time validation
-    const validateSQL = (model) => {
-      const value = model.getValue();
-      const markers = [];
-
-      if (value.trim()) {
-        const errors = validateSQLSyntax(value);
-        errors.forEach(error => {
-          markers.push({
-            severity: monaco.MarkerSeverity.Error,
-            startLineNumber: error.line,
-            startColumn: error.column,
-            endLineNumber: error.line,
-            endColumn: error.column + error.length,
-            message: error.message,
-            source: 'SQL Validator'
-          });
-        });
-      }
-
-      monaco.editor.setModelMarkers(model, 'sql-validator', markers);
-    };
-
-    // Validate on content change
-    editor.onDidChangeModelContent(() => {
-      const model = editor.getModel();
-      if (model) {
-        // Debounce validation
-        setTimeout(() => validateSQL(model), 500);
-      }
-    });
-  };
-
-  const validateSQLSyntax = (sql) => {
-    const errors = [];
-    const lines = sql.split('\n');
-    
-    lines.forEach((line, lineIndex) => {
-      const trimmedLine = line.trim().toLowerCase();
-      
-      // Check for common SQL syntax errors
-      if (trimmedLine) {
-        // Missing semicolon at end of statement (optional check)
-        if (trimmedLine.match(/^(select|insert|update|delete|create|alter|drop)/) && 
-            !trimmedLine.endsWith(';') && 
-            lineIndex === lines.length - 1 && 
-            lines.length > 1) {
-          // This is optional, so we'll make it a warning instead of error
-        }
-
-        // Unmatched parentheses
-        const openParens = (line.match(/\(/g) || []).length;
-        const closeParens = (line.match(/\)/g) || []).length;
-        if (openParens !== closeParens) {
-          errors.push({
-            line: lineIndex + 1,
-            column: 1,
-            length: line.length,
-            message: 'Unmatched parentheses'
-          });
-        }
-
-        // Unmatched quotes
-        const singleQuotes = (line.match(/'/g) || []).length;
-        const doubleQuotes = (line.match(/"/g) || []).length;
-        if (singleQuotes % 2 !== 0) {
-          errors.push({
-            line: lineIndex + 1,
-            column: line.indexOf("'") + 1,
-            length: 1,
-            message: 'Unmatched single quote'
-          });
-        }
-        if (doubleQuotes % 2 !== 0) {
-          errors.push({
-            line: lineIndex + 1,
-            column: line.indexOf('"') + 1,
-            length: 1,
-            message: 'Unmatched double quote'
-          });
-        }
-
-        // Check for invalid SQL keywords combinations
-        if (trimmedLine.includes('select') && trimmedLine.includes('from')) {
-          const selectIndex = trimmedLine.indexOf('select');
-          const fromIndex = trimmedLine.indexOf('from');
-          if (selectIndex > fromIndex) {
-            errors.push({
-              line: lineIndex + 1,
-              column: selectIndex + 1,
-              length: 6,
-              message: 'SELECT must come before FROM'
-            });
-          }
-        }
-
-        // Check for missing table name after FROM
-        const fromMatch = trimmedLine.match(/\bfrom\s*$/);
-        if (fromMatch) {
-          errors.push({
-            line: lineIndex + 1,
-            column: fromMatch.index + 1,
-            length: 4,
-            message: 'Missing table name after FROM'
-          });
-        }
-
-        // Check for missing column name after SELECT
-        const selectMatch = trimmedLine.match(/\bselect\s*$/);
-        if (selectMatch) {
-          errors.push({
-            line: lineIndex + 1,
-            column: selectMatch.index + 1,
-            length: 6,
-            message: 'Missing column specification after SELECT'
-          });
-        }
-      }
-    });
-
-    return errors;
-  };
 
   const setupSQLAutocompletion = () => {
     const monaco = monacoRef.current;
@@ -310,22 +174,9 @@ const SQLEditor = ({ onExecute, assignment }) => {
     return null;
   };
 
-  const handleExecute = async () => {
-    if (!query.trim()) {
-      return;
-    }
-
-    if (isExecuting) {
-      return; // Prevent multiple simultaneous executions
-    }
-
-    setIsExecuting(true);
-    try {
-      await onExecute(query);
-    } catch (error) {
-      console.error('Execution error:', error);
-    } finally {
-      setIsExecuting(false);
+  const handleExecute = () => {
+    if (query.trim()) {
+      onExecute(query);
     }
   };
 
@@ -382,10 +233,9 @@ const SQLEditor = ({ onExecute, assignment }) => {
       ]
     });
 
-    // Setup autocompletion and validation if assignment is available
+    // Setup autocompletion if assignment is available
     if (assignment) {
       setupSQLAutocompletion();
-      setupSQLValidation();
     }
 
     // Add keyboard shortcuts
@@ -402,13 +252,7 @@ const SQLEditor = ({ onExecute, assignment }) => {
     <div className="sql-editor">
       <div className="editor-header">
         <div className="header-left">
-          <button 
-            onClick={handleExecute} 
-            className={`run-button ${isExecuting ? 'executing' : ''}`}
-            disabled={isExecuting || !query.trim()}
-          >
-            {isExecuting ? 'Running...' : 'Run'}
-          </button>
+          <button onClick={handleExecute} className="run-button">Run</button>
           <button onClick={() => setQuery('')} className="clear-button">Clear</button>
         </div>
         <div className="header-right">
@@ -481,18 +325,14 @@ const SQLEditor = ({ onExecute, assignment }) => {
               showIssues: true,
               showUsers: true,
               showColors: true
-            },
-            // Enable error squiggles and validation
-            renderValidationDecorations: 'on',
-            showUnused: true,
-            showDeprecated: true
+            }
           }}
           theme="vs-dark"
         />
       </div>
       
       <div className="editor-footer">
-        <span>Press Ctrl+Enter to run • Ctrl+H for hint • Red underlines show syntax errors</span>
+        <span>Press Ctrl+Enter to run • Ctrl+H for hint • Start typing for suggestions</span>
       </div>
     </div>
   );
