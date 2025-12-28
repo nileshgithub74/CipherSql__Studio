@@ -9,10 +9,16 @@ class HintService {
 
   async generateHint(assignmentQuestion, userQuery, schema, difficulty = 'Easy') {
     try {
+      // Validate API key exists
+      if (!process.env.GEMINI_API_KEY) {
+        console.error('Gemini API key not found');
+        return this.getFallbackHint(assignmentQuestion, difficulty);
+      }
+
       const prompt = this.buildPrompt(assignmentQuestion, userQuery, schema, difficulty);
       
       const result = await this.model.generateContent(prompt);
-      const response = await result.response;
+      const response = result.response;
       const hint = response.text();
       
       return {
@@ -21,7 +27,12 @@ class HintService {
         type: 'ai_generated'
       };
     } catch (error) {
-      console.error('Gemini AI Error:', error);
+      console.error('Gemini AI Error:', error.message);
+      
+      // Check if it's an API key issue
+      if (error.message.includes('API_KEY_INVALID') || error.message.includes('API key not valid')) {
+        console.error('Invalid Gemini API key - using fallback hints');
+      }
       
       // Fallback to basic hints if AI fails
       return this.getFallbackHint(assignmentQuestion, difficulty);
