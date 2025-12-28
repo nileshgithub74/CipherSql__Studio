@@ -4,12 +4,7 @@ A comprehensive SQL learning platform with interactive query execution, user aut
 
 ## 🚀 Features
 
-### Authentication System
-- **User Registration & Login** with email validation
-- **JWT-based Authentication** for secure sessions
-- **Password Hashing** using bcryptjs
-- **Toast Notifications** for user feedback
-- **Automatic Redirects** after successful authentication
+
 
 ### SQL Learning Platform
 - **Interactive SQL Editor** with Monaco Editor
@@ -116,11 +111,14 @@ CipherSQL-Studio/
 
 ## 🔗 API Endpoints
 
+<<<<<<< HEAD
 ### Authentication Routes
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `GET /api/auth/me` - Get current user (protected)
 - `POST /api/auth/logout` - User logout
+=======
+>>>>>>> 574e140a7f44e6fb018b1af5f9a0aff726a4a3d0
 
 ### Assignment Routes
 - `GET /api/assignment` - Get all assignments
@@ -131,6 +129,7 @@ CipherSQL-Studio/
 - `POST /api/sql/validate` - Validate SQL answer
 - `GET /api/sql/hints/:id` - Get hints for assignment
 
+<<<<<<< HEAD
 ## 🎯 Usage
 
 ### For Users
@@ -154,6 +153,9 @@ CipherSQL-Studio/
 - **SQL Injection Protection**: Parameterized queries
 - **CORS Configuration**: Proper cross-origin resource sharing
 - **Environment Variables**: Sensitive data protection
+=======
+
+>>>>>>> 574e140a7f44e6fb018b1af5f9a0aff726a4a3d0
 
 ## 🚀 Deployment
 
@@ -182,6 +184,7 @@ This project is licensed under the MIT License.
 
 ## 👥 Authors
 
+<<<<<<< HEAD
 - **Kumar Nilesh** - Initial development and authentication system
 
 ## 🐛 Known Issues
@@ -197,3 +200,7 @@ For support and questions:
 ---
 
 **Happy SQL Learning! 🎉**
+=======
+- **Kumar Nilesh** - Initial development and authentication syst
+
+>>>>>>> 574e140a7f44e6fb018b1af5f9a0aff726a4a3d0
