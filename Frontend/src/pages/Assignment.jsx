@@ -15,6 +15,7 @@ const Assignment = () => {
   const [schemaId, setSchemaId] = useState(null);
   const [tables, setTables] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [previousShowResults, setPreviousShowResults] = useState(false);
 
   const resultsRef = useRef(null);
   const editorRef = useRef(null);
@@ -24,22 +25,25 @@ const Assignment = () => {
   }, [id]);
 
   useEffect(() => {
-    if (showResults && resultsRef.current) {
-      setTimeout(() => {
-        resultsRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+    // Only scroll when showResults changes from false to true (first time showing results)
+    if (showResults && !previousShowResults && resultsRef.current) {
+      const timeoutId = setTimeout(() => {
+        if (resultsRef.current) {
+          resultsRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
       }, 100);
-    } else if (!showResults && editorRef.current) {
-      setTimeout(() => {
-        editorRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 100);
+      
+      return () => clearTimeout(timeoutId);
     }
-  }, [showResults]);
+    
+    // Update previous state
+    if (showResults !== previousShowResults) {
+      setPreviousShowResults(showResults);
+    }
+  }, [showResults, previousShowResults]);
 
   const loadAssignment = async () => {
     try {
@@ -65,7 +69,6 @@ const Assignment = () => {
 
   const executeQuery = async (query) => {
     try {
-      
       const executeResponse = await axios.post(
         `${API_CONFIG.BASE_URL}/sql/query/execute`,
         {
@@ -74,10 +77,10 @@ const Assignment = () => {
         }
       );
 
-      
-
       const { data: queryResults } = executeResponse.data;
-      setResults(queryResults);
+      
+      // Clear any previous errors and set new results
+      setResults({ ...queryResults, error: null });
 
       const validateResponse = await axios.post(
         `${API_CONFIG.BASE_URL}/sql/query/validate`,
@@ -91,9 +94,46 @@ const Assignment = () => {
       const { data: validationResults } = validateResponse.data;
       setValidation(validationResults);
 
+      // Always show results after execution
       setShowResults(true);
+      
+      // Scroll to results after a short delay to ensure DOM is updated
+      setTimeout(() => {
+        if (resultsRef.current) {
+          resultsRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 150);
+      
     } catch (error) {
-      console.log("Error executing query:", error);
+      console.error("Error executing query:", error);
+      
+      // Set error results to display to user
+      const errorMessage = error.response?.data?.error || error.message || "An error occurred while executing the query";
+      
+      setResults({
+        error: errorMessage,
+        rows: [],
+        fields: [],
+        rowCount: 0,
+        executionTime: 0
+      });
+      
+      setValidation(null);
+      // Always show results even for errors
+      setShowResults(true);
+      
+      // Scroll to results for errors too
+      setTimeout(() => {
+        if (resultsRef.current) {
+          resultsRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 150);
     }
   };
 

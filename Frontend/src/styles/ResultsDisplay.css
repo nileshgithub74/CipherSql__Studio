@@ -106,3 +106,93 @@
 .results-table tbody tr:nth-child(even) {
   background: #f8fafc;
 }
+/* SQL Error Styles */
+.sql-error {
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  border-left: 4px solid #dc2626;
+}
+
+.sql-error h4 {
+  margin: 0 0 0.75rem 0;
+  color: #dc2626;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.error-message {
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.error-message pre {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #b91c1c;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.error-help {
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  border-radius: 4px;
+  padding: 0.75rem;
+}
+
+.error-help p {
+  margin: 0 0 0.5rem 0;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.error-help ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #92400e;
+}
+
+.error-help li {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+/* No Data Styles */
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.no-data p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #16a34a;
+}
+
+.no-data small {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Execution Info */
+.execution-info {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: right;
+}
+
+.execution-info small {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
