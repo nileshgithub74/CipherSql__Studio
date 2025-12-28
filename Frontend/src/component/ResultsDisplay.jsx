@@ -11,7 +11,7 @@ const ResultsDisplay = ({ results, validation }) => {
         </div>
       )}
 
-      {/* Display SQL Error */}
+    
       {results?.error && (
         <div className="sql-error">
           <h4>❌ SQL Error</h4>
@@ -30,7 +30,7 @@ const ResultsDisplay = ({ results, validation }) => {
         </div>
       )}
 
-      {/* Display Results */}
+  
       {results && !results.error && (
         <div className="results">
           <h4>✅ Results ({results.rowCount || 0} rows)</h4>

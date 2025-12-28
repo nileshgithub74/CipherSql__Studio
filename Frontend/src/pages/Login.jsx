@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Basic validation
+  
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all fields');
       setLoading(false);
@@ -46,7 +46,7 @@ const Login = () => {
         
         toast.success(`Welcome back, ${response.data.user.name}!`);
         
-        // Navigate to home page
+      
         setTimeout(() => {
           navigate('/');
         }, 1000);

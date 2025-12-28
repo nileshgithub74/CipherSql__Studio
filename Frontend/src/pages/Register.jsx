@@ -62,12 +62,12 @@ const Register = () => {
       });
 
       if (response.data.success) {
-        // Use auth context to login
+       
         login(response.data.user, response.data.token);
         
         toast.success(`Account created successfully! Welcome, ${response.data.user.name}!`);
         
-        // Navigate to home page
+       
         setTimeout(() => {
           navigate('/');
         }, 1000);

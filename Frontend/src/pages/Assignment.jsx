@@ -25,7 +25,7 @@ const Assignment = () => {
   }, [id]);
 
   useEffect(() => {
-    // Only scroll when showResults changes from false to true (first time showing results)
+  
     if (showResults && !previousShowResults && resultsRef.current) {
       const timeoutId = setTimeout(() => {
         if (resultsRef.current) {
@@ -39,7 +39,7 @@ const Assignment = () => {
       return () => clearTimeout(timeoutId);
     }
     
-    // Update previous state
+  
     if (showResults !== previousShowResults) {
       setPreviousShowResults(showResults);
     }
@@ -79,7 +79,7 @@ const Assignment = () => {
 
       const { data: queryResults } = executeResponse.data;
       
-      // Clear any previous errors and set new results
+   
       setResults({ ...queryResults, error: null });
 
       const validateResponse = await axios.post(
@@ -94,10 +94,9 @@ const Assignment = () => {
       const { data: validationResults } = validateResponse.data;
       setValidation(validationResults);
 
-      // Always show results after execution
+      
       setShowResults(true);
       
-      // Scroll to results after a short delay to ensure DOM is updated
       setTimeout(() => {
         if (resultsRef.current) {
           resultsRef.current.scrollIntoView({
@@ -110,7 +109,7 @@ const Assignment = () => {
     } catch (error) {
       console.error("Error executing query:", error);
       
-      // Set error results to display to user
+   
       const errorMessage = error.response?.data?.error || error.message || "An error occurred while executing the query";
       
       setResults({
@@ -122,10 +121,10 @@ const Assignment = () => {
       });
       
       setValidation(null);
-      // Always show results even for errors
+   
       setShowResults(true);
       
-      // Scroll to results for errors too
+    
       setTimeout(() => {
         if (resultsRef.current) {
           resultsRef.current.scrollIntoView({
