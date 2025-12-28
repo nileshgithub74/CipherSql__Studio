@@ -15,7 +15,7 @@ const Navbar = () => {
     e.stopPropagation();
     
     logout();
-    toast.success('Logged out successfully! 👋');
+    toast.success('Logged out successfully!');
     setShowDropdown(false);
     navigate('/');
   };

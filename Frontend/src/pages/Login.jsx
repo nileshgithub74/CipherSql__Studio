@@ -41,10 +41,10 @@ const Login = () => {
       });
 
       if (response.data.success) {
-        // Use auth context to login
+        
         login(response.data.user, response.data.token);
         
-        toast.success(`Welcome back, ${response.data.user.name}! 🎉`);
+        toast.success(`Welcome back, ${response.data.user.name}!`);
         
         // Navigate to home page
         setTimeout(() => {
