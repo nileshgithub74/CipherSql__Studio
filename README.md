@@ -152,12 +152,3 @@ This project is licensed under the MIT License.
 - **Kumar Nilesh** - Initial development and authentication system
 
 
-
-## 📞 Support
-
-For support and questions:
-- Create an issue in the GitHub repository
-- Contact the development team
-
----
-
