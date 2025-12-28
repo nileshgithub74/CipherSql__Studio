@@ -117,6 +117,7 @@ const Assignment = () => {
               onToggleResults={toggleResults}
               resultsRef={resultsRef}
               editorRef={editorRef}
+              assignment={assignment}
             />
           </div>
         </>

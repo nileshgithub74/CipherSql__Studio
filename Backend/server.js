@@ -6,6 +6,7 @@ dotenv.config();
 import assignmentRoutes from "./routes/assignmentRoutes.js";
 import sqlRoutes from "./routes/sqlRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import hintRoutes from "./routes/hintRoutes.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/assignment", assignmentRoutes);
 app.use("/api/sql", sqlRoutes);
+app.use("/api/hint", hintRoutes);
 
 
 
