@@ -35,6 +35,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData, token) => {
     console.log('Logging in user:', userData);
+    
+    // Set default role if not provided
+    if (!userData.role) {
+      userData.role = 'user';
+    }
+    
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', token);

@@ -1,16 +1,33 @@
+import { useImperativeHandle, forwardRef } from 'react';
 import SQLEditor from './SQLEditor';
 import ResultsDisplay from './ResultsDisplay';
 import '../styles/QueryPanel.css';
 
-const QueryPanel = ({ onExecute, results, validation, showResults, onToggleResults, resultsRef, editorRef, assignment }) => {
+const QueryPanel = forwardRef(({ onExecute, results, validation, showResults, onToggleResults, resultsRef, assignment, editorOnly = false }, ref) => {
   const hasResults = results && (results.rows?.length > 0 || validation || results.error);
+
+  // If editorOnly is true, only show the editor
+  if (editorOnly) {
+    return (
+      <div className="query-panel editor-only">
+        <div className="editor full">
+          <SQLEditor 
+            onExecute={onExecute}
+            assignment={assignment}
+            ref={ref}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="query-panel">
-      <div className={hasResults && showResults ? "editor" : "editor full"} ref={editorRef}>
+      <div className={hasResults && showResults ? "editor" : "editor full"}>
         <SQLEditor 
           onExecute={onExecute}
           assignment={assignment}
+          ref={ref}
         />
       </div>
 
@@ -35,6 +52,8 @@ const QueryPanel = ({ onExecute, results, validation, showResults, onToggleResul
       )}
     </div>
   );
-};
+});
+
+QueryPanel.displayName = 'QueryPanel';
 
 export default QueryPanel;

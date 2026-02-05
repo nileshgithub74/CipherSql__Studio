@@ -213,6 +213,106 @@
   background-color: #fee2e2 !important;
 }
 
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+/* Dark theme styles for navbar */
+[data-theme="dark"] .navbar {
+  background-color: #1e1e1e;
+  border-bottom-color: #333333;
+}
+
+[data-theme="dark"] .navbar-brand {
+  color: #cccccc;
+}
+
+[data-theme="dark"] .navbar-brand:hover {
+  color: #569cd6;
+}
+
+[data-theme="dark"] .navbar-link {
+  color: #969696;
+}
+
+[data-theme="dark"] .navbar-link:hover {
+  color: #569cd6;
+}
+
+[data-theme="dark"] .navbar-link.active {
+  color: #569cd6;
+}
+
+[data-theme="dark"] .user-account-btn {
+  color: #cccccc;
+}
+
+[data-theme="dark"] .user-account-btn:hover {
+  background-color: #2d2d30;
+}
+
+[data-theme="dark"] .user-dropdown {
+  background: #252526;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .dropdown-name {
+  color: #cccccc;
+}
+
+[data-theme="dark"] .dropdown-email {
+  color: #969696;
+}
+
+[data-theme="dark"] .dropdown-divider {
+  background: #333333;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #cccccc;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background-color: #2d2d30;
+}
+
+[data-theme="dark"] .logout-btn {
+  color: #f14c4c !important;
+}
+
+[data-theme="dark"] .logout-btn:hover {
+  background-color: #3c1e1e !important;
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: #252526;
+  border-color: #333333;
+  color: #969696;
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: #2d2d30;
+  color: #cccccc;
+  border-color: #404040;
+}
+
 @media (max-width: 768px) {
   .navbar-nav {
     gap: 1rem;
@@ -224,5 +324,10 @@
   
   .user-dropdown {
     min-width: 200px;
+  }
+  
+  .theme-toggle-btn {
+    width: 36px;
+    height: 36px;
   }
 }

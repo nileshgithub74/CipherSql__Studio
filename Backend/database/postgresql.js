@@ -194,8 +194,8 @@ export const getTableData = async (client, schemaId) => {
         dataType: col.data_type
       }));
       
-      // Get sample data
-      const dataResult = await client.query(`SELECT * FROM "${tableName}" LIMIT 10`);
+      // Get sample data (limit to 5 rows to avoid UI collision)
+      const dataResult = await client.query(`SELECT * FROM "${tableName}" LIMIT 5`);
       
       tables.push({
         tableName,

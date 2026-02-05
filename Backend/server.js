@@ -24,7 +24,7 @@ ConnectDB();
 
 app.get("/", (req, res) => {
   res.json({ 
-    message: "SQL Editor Backend API is running!",
+    message: "SQL Studio Backend API is running!",
     status: "healthy",
     timestamp: new Date().toISOString()
   });

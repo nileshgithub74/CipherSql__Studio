@@ -1,16 +1,21 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
 import API_CONFIG from '../config/api';
+import { useTheme } from '../context/ThemeContext';
 import '../styles/SQLEditor.css';
 
-const SQLEditor = ({ onExecute, assignment }) => {
+const SQLEditor = forwardRef(({ onExecute, assignment }, ref) => {
   const [query, setQuery] = useState("");
-  const [hint, setHint] = useState("");
-  const [showHint, setShowHint] = useState(false);
-  const [loadingHint, setLoadingHint] = useState(false);
+  const { isDark } = useTheme();
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
+
+  // Expose getValue method and other functions to parent component
+  useImperativeHandle(ref, () => ({
+    getValue: () => query,
+    clearQuery: () => setQuery('')
+  }));
 
   useEffect(() => {
     // Setup autocomplete when editor is ready
@@ -180,31 +185,6 @@ const SQLEditor = ({ onExecute, assignment }) => {
     }
   };
 
-  const handleGetHint = async () => {
-    if (!assignment) return;
-    
-    setLoadingHint(true);
-    try {
-      const response = await axios.post(
-        `${API_CONFIG.BASE_URL}/hint/assignment/${assignment._id}`,
-        {
-          userQuery: query
-        }
-      );
-
-      if (response.data.success) {
-        setHint(response.data.hint);
-        setShowHint(true);
-      }
-    } catch (error) {
-      console.error('Error getting hint:', error);
-      setHint("Unable to get hint at this time. Try breaking down the problem into smaller steps.");
-      setShowHint(true);
-    } finally {
-      setLoadingHint(false);
-    }
-  };
-
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
@@ -242,43 +222,10 @@ const SQLEditor = ({ onExecute, assignment }) => {
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       handleExecute();
     });
-
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyH, () => {
-      handleGetHint();
-    });
   };
 
   return (
     <div className="sql-editor">
-      <div className="editor-header">
-        <div className="header-left">
-          <button onClick={handleExecute} className="run-button">Run</button>
-          <button onClick={() => setQuery('')} className="clear-button">Clear</button>
-        </div>
-        <div className="header-right">
-          <button 
-            onClick={handleGetHint} 
-            className="hint-button"
-            disabled={loadingHint}
-            title="Get AI hint (Ctrl+H)"
-          >
-            {loadingHint ? 'Getting Hint...' : '💡 Hint'}
-          </button>
-        </div>
-      </div>
-
-      {showHint && (
-        <div className="hint-panel">
-          <div className="hint-header">
-            <span>💡 Hint</span>
-            <button onClick={() => setShowHint(false)} className="close-hint">×</button>
-          </div>
-          <div className="hint-content">
-            {hint}
-          </div>
-        </div>
-      )}
-      
       <div className="editor-content">
         <Editor
           height="100%"
@@ -327,15 +274,13 @@ const SQLEditor = ({ onExecute, assignment }) => {
               showColors: true
             }
           }}
-          theme="vs-dark"
+          theme={isDark ? "vs-dark" : "light"}
         />
-      </div>
-      
-      <div className="editor-footer">
-        <span>Press Ctrl+Enter to run • Ctrl+H for hint • Start typing for suggestions</span>
       </div>
     </div>
   );
-};
+});
+
+SQLEditor.displayName = 'SQLEditor';
 
 export default SQLEditor;
