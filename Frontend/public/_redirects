@@ -1,0 +1,12 @@
+# Netlify SPA redirect rules
+# Handle client-side routing
+/*    /index.html   200
+
+# API proxy (optional - if you want to proxy API calls)
+/api/*  https://sql-code-studio.onrender.com/api/:splat  200
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
