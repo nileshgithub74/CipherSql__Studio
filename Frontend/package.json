@@ -7,12 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "build:netlify": "vite build && cp public/_redirects dist/",
-    "build:vercel": "vite build",
-    "build:firebase": "vite build",
-    "build:surge": "vite build && cp public/200.html dist/",
-    "build:github": "vite build && cp public/404.html dist/"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
