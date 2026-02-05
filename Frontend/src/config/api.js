@@ -1,11 +1,14 @@
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_URL 
-    ? `${import.meta.env.VITE_API_URL}/api` 
-    : 'https://sql-code-studio.onrender.com/api'
+  BASE_URL: import.meta.env.DEV 
+    ? 'http://localhost:8080/api'  // Use local backend in development
+    : import.meta.env.VITE_API_URL 
+      ? `${import.meta.env.VITE_API_URL}/api` 
+      : 'https://sql-code-studio.onrender.com/api'
 };
 
 console.log('API_CONFIG loaded:', API_CONFIG);
+console.log('DEV mode:', import.meta.env.DEV);
 console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 console.log('Final BASE_URL:', API_CONFIG.BASE_URL);
 
