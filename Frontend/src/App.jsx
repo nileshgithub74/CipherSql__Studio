@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import AssignmentList from "./pages/AssignmentList.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedRoute from "./component/ProtectedRoute.jsx";
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
@@ -20,11 +21,26 @@ const App = () => {
         <div className="app">
           {!isAssignmentPage && <Navbar />}
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/assignments" element={<AssignmentList />} />
-            <Route path="/assignment/:id" element={<Assignment />} />
+            
+            {/* Protected routes */}
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } />
+            <Route path="/assignments" element={
+              <ProtectedRoute>
+                <AssignmentList />
+              </ProtectedRoute>
+            } />
+            <Route path="/assignment/:id" element={
+              <ProtectedRoute>
+                <Assignment />
+              </ProtectedRoute>
+            } />
           </Routes>
           <Toaster
             position="top-right"

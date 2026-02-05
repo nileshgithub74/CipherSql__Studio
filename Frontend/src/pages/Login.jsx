@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
@@ -14,7 +14,11 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+
+  // Get the page user was trying to access before login
+  const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e) => {
     setFormData({
@@ -27,7 +31,6 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-  
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all fields');
       setLoading(false);
@@ -41,14 +44,12 @@ const Login = () => {
       });
 
       if (response.data.success) {
-        
         login(response.data.user, response.data.token);
-        
         toast.success(`Welcome back, ${response.data.user.name}!`);
         
-      
+        // Redirect to the page user was trying to access
         setTimeout(() => {
-          navigate('/');
+          navigate(from, { replace: true });
         }, 1000);
       }
     } catch (error) {
